@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+  <body>
+    <h1>Your profile</h1>
+    <img th:src="${picture}" alt="avatar" width="64"/>
+    <p th:text="${name}"></p>
+    <p th:text="${email}"></p>
+    <a href="/logout">Logout</a>
+  </body>
+</html>

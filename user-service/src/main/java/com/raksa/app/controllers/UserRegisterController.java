@@ -42,4 +42,10 @@ public class UserRegisterController {
     public Mono<ResponseMessage<Object>> verify(@RequestBody VerifyRequestDto requestDto){
         return userRegister.verifyUser(requestDto);
     }
+
+    @GetMapping("/get-cookie-testing")
+    @ResponseBody
+    public String profile(@CookieValue(name = "Idea-91e1f3d3", required = false) String myId) {
+        return "Your id is " + myId;
+    }
 }
