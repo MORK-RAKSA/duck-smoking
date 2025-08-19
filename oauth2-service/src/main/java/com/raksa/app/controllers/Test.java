@@ -16,7 +16,7 @@ public class Test {
 //        return Mono.just("Hello, World! from Product Testing Service");
 //    }
 
-    @GetMapping("/test")
+    @GetMapping("/")
     public ResponseMessage<String> test() {
         return ResponseMessage.success("Hello, World! from Product Testing Service");
     }

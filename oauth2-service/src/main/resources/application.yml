@@ -28,18 +28,22 @@ spring:
         registration:
           google:
             client-id: 99125590092-f7c91gdsgs5mihdp7jaghch4nhfkv4fm.apps.googleusercontent.com
-            client-secret: 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
+            client-secret: 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
             scope: openid, profile, email
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-          provider:
-            google:
-              issuer-uri: https://accounts.google.com
+          github:
+            client-id: Ov23liz1KJpTlFVk1QdX
+            client-secret: 2f8a02d7805716321609b123623ebb8c9b526221
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
+app:
+  jwt:
+    secret: "a-very-long-random-256-bit-secret-string-change-me"
+    expirySeconds: 2592000
 
 springdoc:
   api-docs:
