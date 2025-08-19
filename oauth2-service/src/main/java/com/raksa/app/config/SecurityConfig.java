@@ -19,7 +19,8 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/webjars/**",
-                                "/login"
+                                "/login",
+                                "/profile-user"
                         ).permitAll()
                         .anyExchange().authenticated()
                 )

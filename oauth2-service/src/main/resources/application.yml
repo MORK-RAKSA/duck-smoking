@@ -42,8 +42,8 @@ eureka:
 
 app:
   jwt:
-    secret: "a-very-long-random-256-bit-secret-string-change-me"
-    expirySeconds: 2592000
+    secret: changeMeChangeMeChangeMeChangeMe123
+    expirySeconds: 30 * 24 * 60 * 60 # 30 days
 
 springdoc:
   api-docs:
