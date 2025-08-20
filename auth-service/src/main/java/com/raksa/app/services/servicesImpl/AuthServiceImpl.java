@@ -5,7 +5,7 @@ import com.raksa.app.dtos.responses.JwtTokenResponseDto;
 import com.raksa.app.dtos.responses.UserResponseDto;
 import com.raksa.app.exception.ResponseMessage;
 import com.raksa.app.exception.exceptionHandle.BadCredentialsException;
-import com.raksa.app.utils.JwtUtil;
+import com.raksa.app.utils.JwtService;
 import com.raksa.app.utils.LoggerFormaterUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthServiceImpl {
     private final WebClient userServiceWebClient;
+    private final JwtService jwtService;
 
     public Mono<ResponseMessage<List<UserResponseDto>>> getAllUser(String authHeader) {
 
@@ -90,7 +91,7 @@ public class AuthServiceImpl {
 //                    }
 
                     if (validatePassword(userRequestDto.getPassword(), user.getPassword())) {
-                        String token = JwtUtil.generateToken(user);
+                        String token = jwtService.generateToken(user);
                         JwtTokenResponseDto jwtTokenResponseDto = new JwtTokenResponseDto();
                         jwtTokenResponseDto.setToken(token);
                         log.info("\n\n\t----------------- Login successful for user: {}\n", user.getUsername());

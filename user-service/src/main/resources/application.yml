@@ -25,18 +25,18 @@ spring:
         jwt:
           secret-key: changeMeChangeMeChangeMeChangeMe123
 #          jwk-set-uri: http://auth-service:8081/.well-known/jwks.json
-#      client:
-#        registration:
-#          google:
-#            client-id:
-#            client-secret:
-#            scope:
-#              - openid
-#              - profile
-#              - email
-#        provider:
-#          google:
-#            issuer-uri: https://accounts.google.com
+      client:
+        registration:
+          google:
+            client-id: 99125590092-f7c91gdsgs5mihdp7jaghch4nhfkv4fm.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - openid
+              - profile
+              - email
+        provider:
+          google:
+            issuer-uri: https://accounts.google.com
   mail:
     host: smtp.gmail.com
     port: 587

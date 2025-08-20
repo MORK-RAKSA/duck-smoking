@@ -2,7 +2,7 @@ rootProject.name = 'micro-service'
 
 include 'core'
 include 'gateway'
-include 'product-service'
+include 'oauth2-service'
 include 'discovery-service'
 include 'test'
 include 'auth-service'
