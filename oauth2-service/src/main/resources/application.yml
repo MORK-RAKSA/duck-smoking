@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8081
 spring:
   main:
     web-application-type: reactive
@@ -24,7 +24,6 @@ spring:
         jwt:
           secret: changeMeChangeMeChangeMeChangeMe123
           ttl-days: 30
-      #        jwk-set-uri: http://auth-service:8081/.well-known/jwks.json
       client:
         registration:
           google:

@@ -4,13 +4,16 @@ server:
 spring:
   application:
     name: api-gateway
-
   main:
     web-application-type: reactive
-
   webflux:
     static-path-pattern: /**
-
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret: changeMeChangeMeChangeMeChangeMe123
+          ttl-days: 30
   cloud:
     gateway:
       discovery:
@@ -18,30 +21,12 @@ spring:
           enabled: true
           lowerCaseServiceId: true
       routes:
-        - id: user-service
-          uri: lb://user-service
+        - id: oauth2-service
+          uri: lb://oauth2-service
           predicates:
-            - Path=/api-app/v1.0.0/user-service/**
+            - Path=/api-app/duck-smoking/v1.0.0/oauth2-service/**
           filters:
             - StripPrefix=3
-
-        - id: product-service
-          uri: lb://product-service
-          predicates:
-            - Path=/api-app/v1.0.0/product-service/**
-          filters:
-            - StripPrefix=3
-
-        - id: auth-service
-          uri: lb://auth-service
-          predicates:
-            - Path=/api-app/v1.0.0/auth-service/**
-          filters:
-            - StripPrefix=3
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
 
 springdoc:
   api-docs:
@@ -55,14 +40,8 @@ springdoc:
     enabled: true
     urls:
 
-      - name: user-service
-        url: /api-app/v1.0.0/user-service/v3/api-docs
-
-      - name: product-service
-        url: /api-app/v1.0.0/product-service/v3/api-docs
-
-      - name: auth-service
-        url: /api-app/v1.0.0/auth-service/v3/api-docs
+      - name: oauth2-service
+        url: /api-app/duck-smoking/v1.0.0/oauth2-service/v3/api-docs
 
     try-it-out-enabled: true
     operations-sorter: method

@@ -28,7 +28,8 @@ public class JwtService {
         this.ttlDays = ttlDays;
     }
 
-    public String generateToken(UserResponseDto userResponseDto) {
+    /** Generate Access Token (short-lived, e.g. 15 min) */
+    public String generateAccessToken(UserResponseDto userResponseDto) {
         Instant now = Instant.now();
         return Jwts.builder()
                 .claim("id", userResponseDto.getId())
@@ -37,22 +38,26 @@ public class JwtService {
                 .claim("provider", userResponseDto.getProvider())
                 .claim("picture", userResponseDto.getPicture())
                 .setIssuedAt(Date.from(now))
-                .setExpiration(Date.from(now.plus(Duration.ofHours(2))))
+                .setExpiration(Date.from(now.plus(Duration.ofMinutes(15)))) // 15 min
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
+    /** Generate Refresh Token (long-lived, e.g. ttlDays) */
     public String generateRefreshToken(UserResponseDto userResponseDto) {
         Instant now = Instant.now();
         return Jwts.builder()
-                .setSubject(userResponseDto.getId()) // just the userId
+                .claim("id", userResponseDto.getId())
+                .setSubject(userResponseDto.getName())
+                .claim("providerId", userResponseDto.getProviderId())
+                .claim("provider", userResponseDto.getProvider())
                 .setIssuedAt(Date.from(now))
-                .setExpiration(Date.from(now.plus(Duration.ofDays(30)))) // 30 days
+                .setExpiration(Date.from(now.plus(Duration.ofDays(ttlDays)))) // e.g. 30 days
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-
+    /** Parse and validate any token */
     public Claims parseToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -61,21 +66,11 @@ public class JwtService {
                 .getBody();
     }
 
-    /** Validates the JWT token and returns the username if valid. */
     public String validateToken(String token) {
         return parseToken(token).getSubject();
     }
 
-    /** Extracts claims from the JWT token. */
     public Claims extractClaims(String token) {
         return parseToken(token);
-    }
-
-    public String refreshToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(key)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
     }
 }

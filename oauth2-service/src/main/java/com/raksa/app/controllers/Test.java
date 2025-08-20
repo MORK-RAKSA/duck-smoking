@@ -36,7 +36,7 @@ public class Test {
                 : principal.getAttribute("avatar_url") // GitHub
         );
         model.addAttribute("provider", provider.substring(0,1).toUpperCase() + provider.substring(1));
-        oAuth2Service.saveProfile(token, model);
+        oAuth2Service.saveProfile(token);
         return "profile";
     }
 
