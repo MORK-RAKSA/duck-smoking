@@ -3,14 +3,19 @@ package com.raksa.app.model;
 import com.raksa.app.enums.AuthProvider;
 import com.raksa.app.utils.IdGenerator;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "auth_user")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuthUser {
 
     @Id
@@ -24,23 +29,18 @@ public class AuthUser {
         }
     }
 
-    @Column(nullable = false, unique = true)
-    private String email;
-
+    private String provider;
+    private String providerId;
     private String name;
-    private String pictureUrl;
+    private String email;
+    private String picture;
 
-    @Enumerated(EnumType.STRING)
-    private AuthProvider provider;
-
-    @Column(nullable = false, unique = true)
-    private String providerId; // Google "sub" claim
-
-    private String role = "USER";
-
-    @Column(nullable = false)
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    private LocalDateTime lastLoginAt;
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
 }

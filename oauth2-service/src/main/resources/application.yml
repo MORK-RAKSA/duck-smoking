@@ -12,7 +12,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: admin
+    password: root
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
@@ -22,7 +22,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          secret-key: changeMeChangeMeChangeMeChangeMe123
+          secret: changeMeChangeMeChangeMeChangeMe123
+          ttl-days: 30
       #        jwk-set-uri: http://auth-service:8081/.well-known/jwks.json
       client:
         registration:
@@ -35,20 +36,21 @@ spring:
             client-id: Ov23liz1KJpTlFVk1QdX
             client-secret: 2f8a02d7805716321609b123623ebb8c9b526221
 
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security: DEBUG
+
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-app:
-  jwt:
-    secret: changeMeChangeMeChangeMeChangeMe123
-    expirySeconds: 30 * 24 * 60 * 60 # 30 days
-
 springdoc:
   api-docs:
-    path: /v3/api-docs
     enabled: true
+    path: /v3/api-docs
   swagger-ui:
     enabled: true
     try-it-out-enabled: true

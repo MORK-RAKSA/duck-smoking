@@ -1,39 +1,61 @@
 //package com.raksa.app.services.impls;
 //
+//import com.raksa.app.dto.UserResponseDto;
 //import io.jsonwebtoken.Claims;
-//import io.jsonwebtoken.Jws;
 //import io.jsonwebtoken.Jwts;
+//import io.jsonwebtoken.SignatureAlgorithm;
 //import io.jsonwebtoken.security.Keys;
 //import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.stereotype.Service;
 //
 //import java.nio.charset.StandardCharsets;
+//import java.time.Duration;
 //import java.time.Instant;
-//import java.time.LocalDateTime;
 //import java.util.Date;
-//import java.util.Map;
+//import java.security.Key;
 //
 //@Service
 //public class JwtService {
-//    @Value("${app.jwt.secret}") private String secret;
-//    @Value("${app.jwt.expirySeconds}") private long expiry;
 //
-//    public String createToken(String subject, Map<String, Object> claims) {
-//        LocalDateTime now = LocalDateTime.now();
-//        long expiryMillis = 30L * 24 * 60 * 60 * 1000;
+//    private final Key key;
+//    private final int ttlDays;
+//
+//    public JwtService(
+//            @Value("${spring.security.oauth2.resourceserver.jwt.secret}") String secret,
+//            @Value("${spring.security.oauth2.resourceserver.jwt.ttl-days}") int ttlDays) {
+//        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+//        this.ttlDays = ttlDays;
+//    }
+//
+//    public String generateToken(UserResponseDto userResponseDto) {
+//        Instant now = Instant.now();
 //        return Jwts.builder()
-//                .setClaims(claims)
-//                .setSubject(subject)
-//                .setIssuedAt(new java.util.Date())
-//                .setExpiration(new Date(System.currentTimeMillis() + expiryMillis))
-//                .signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)))
+//                .claim("email", userResponseDto.getEmail())
+//                .setSubject(userResponseDto.getName())
+//                .claim("id", userResponseDto.getId())
+//                .claim("provider_id", userResponseDto.getProviderId())
+//                .claim("provider", userResponseDto.getProvider())
+//                .setIssuedAt(Date.from(now))
+//                .setExpiration(Date.from(now.plus(Duration.ofDays(ttlDays))))
+//                .signWith(key, SignatureAlgorithm.HS256)
 //                .compact();
 //    }
 //
-//    public Jws<Claims> parse(String jwt) {
-//        return Jwts.parserBuilder()
-//                .setSigningKey(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)))
-//                .build()
-//                .parseClaimsJws(jwt);
-//    }
+////    public Claims parseToken(String token) {
+////        return Jwts.parserBuilder()
+////                .setSigningKey(key)
+////                .build()
+////                .parseClaimsJws(token)
+////                .getBody();
+////    }
+////
+////    /** Validates the JWT token and returns the username if valid. */
+////    public String validateToken(String token) {
+////        return parseToken(token).getSubject();
+////    }
+////
+////    /** Extracts claims from the JWT token. */
+////    public Claims extractClaims(String token) {
+////        return parseToken(token);
+////    }
 //}

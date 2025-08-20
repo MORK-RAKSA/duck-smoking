@@ -1,30 +1,29 @@
 package com.raksa.app.config;
 
+//import com.raksa.app.services.impls.CustomOAuth2UserService;
+import com.raksa.app.services.impls.OAuth2Service;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
-import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebFluxSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final OAuth2Service auth2Service;
+
     @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers(
-                                "/swagger-ui.html",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/webjars/**",
-                                "/login",
-                                "/profile-user"
-                        ).permitAll()
-                        .anyExchange().authenticated()
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().authenticated()
                 )
-                .oauth2Login(Customizer.withDefaults());
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo.userService(auth2Service))
+                );
         return http.build();
     }
+
 }
