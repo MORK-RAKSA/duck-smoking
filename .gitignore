@@ -6,6 +6,7 @@ HELP.md
 !.idea/codeStyles/
 !.vscode/settings.json
 !.vscode/extensions.json
+oauth2-service/src/main/resources/application.yml
 
 
 build/
