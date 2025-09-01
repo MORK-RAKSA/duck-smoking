@@ -2,6 +2,7 @@ package com.raksa.app.services.impls;
 
 import com.raksa.app.Repository.UserRepository;
 import com.raksa.app.dto.AuthResponse;
+import com.raksa.app.exception.exceptionHandle.ResourceNotFoundException;
 import com.raksa.app.services.jwt.JwtService;
 import com.raksa.app.dto.UserResponseDto;
 import com.raksa.app.mapper.AuthUserMapper;
@@ -19,7 +20,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -68,7 +68,7 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
         return oAuth2User;
     }
 
-    public void saveProfile(OAuth2AuthenticationToken token, Model model) {
+    public void saveProfile(OAuth2AuthenticationToken token) {
         var principal = token.getPrincipal();
         Map<String, Object> attributes = principal.getAttributes();
 
@@ -108,14 +108,14 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
 
         LoggerFormaterUtils.convertDtoToJson("User Response Dto", responseDto);
 
-        String jwt = jwtService.generateToken(responseDto);
+        String jwt = jwtService.generateAccessToken(responseDto);
         log.info("\n\n\nGenerated JWT: {}\n\n", jwt);
     }
 
-    public List<UserResponseDto> getAllUsers() {
-        List<AuthUser> users = userRepository.findAll();
-        return users.stream()
-                .map(authUserMapper::toResponseDto)
-                .toList();
+    public UserResponseDto getUserById(String id) {
+        AuthUser entity = userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(
+                String.format("No user found with ID: %s.", id)));
+        return authUserMapper.toResponseDto(entity);
     }
+
 }

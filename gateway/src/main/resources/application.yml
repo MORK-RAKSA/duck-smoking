@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: api-gateway
+  oauth2:
+    resourceserver:
+      jwt:
+        secret: changeMeChangeMeChangeMeChangeMe123
+        ttl-days: 30
 
   main:
     web-application-type: reactive

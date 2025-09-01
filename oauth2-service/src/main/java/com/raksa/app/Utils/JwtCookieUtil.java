@@ -10,7 +10,7 @@ public class JwtCookieUtil {
         cookie.setHttpOnly(true);        // prevent JavaScript access
         cookie.setSecure(true);          // use only with HTTPS
         cookie.setPath("/");             // cookie available to entire app
-        cookie.setMaxAge(24 * 60 * 60);  // 1 day
+        cookie.setMaxAge(30 * 24 * 60 * 60);  // 1 day
         response.addCookie(cookie);
     }
 }

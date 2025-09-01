@@ -11,7 +11,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 
 
 @Slf4j
-@Configuration
 @EnableWebFluxSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -28,7 +27,7 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/webjars/**",
-                                "/login"
+                                "/login",""
                         ).permitAll()
 //                        .pathMatchers("").authenticated()
                     .anyExchange().permitAll()
